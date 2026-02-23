@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Camera, Monitor, Smartphone, Tablet, History, FolderOpen, Settings, LogOut } from "lucide-react";
+import { Camera, Monitor, Smartphone, Tablet, History, FolderOpen, Settings, LogOut, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import viewportLogo from "@/assets/viewport-logo.png";
 
 const devicePresets = [
@@ -20,13 +24,70 @@ const devicePresets = [
 ];
 
 const Dashboard = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [selectedDevices, setSelectedDevices] = useState<string[]>(["desktop-1440"]);
+  const [capturing, setCapturing] = useState(false);
+  const [captureMode, setCaptureMode] = useState("viewport");
+  const [delay, setDelay] = useState("0");
+  const [scale, setScale] = useState("1");
+  const [format, setFormat] = useState("png");
+  const [background, setBackground] = useState("white");
+  const [hideCookies, setHideCookies] = useState(false);
+  const [hideChat, setHideChat] = useState(false);
+  const [hideStickyHeaders, setHideStickyHeaders] = useState(false);
+  const [hidePopups, setHidePopups] = useState(false);
 
   const toggleDevice = (id: string) => {
     setSelectedDevices((prev) =>
       prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]
     );
+  };
+
+  const handleCapture = async () => {
+    if (!url.trim()) {
+      toast.error("Please enter a URL");
+      return;
+    }
+    if (selectedDevices.length === 0) {
+      toast.error("Please select at least one device");
+      return;
+    }
+
+    setCapturing(true);
+    try {
+      for (const deviceId of selectedDevices) {
+        const device = devicePresets.find((d) => d.id === deviceId)!;
+        const { error } = await supabase.from("capture_jobs").insert({
+          user_id: user!.id,
+          url: url.trim(),
+          device_preset: deviceId,
+          viewport_width: device.width,
+          viewport_height: device.height,
+          device_scale_factor: parseFloat(scale),
+          full_page: captureMode === "fullpage",
+          delay_seconds: parseInt(delay),
+          output_format: format,
+          background,
+          hide_cookie_banners: hideCookies,
+          hide_chat_widgets: hideChat,
+          hide_sticky_headers: hideStickyHeaders,
+          hide_popups: hidePopups,
+        });
+        if (error) throw error;
+      }
+      toast.success(`${selectedDevices.length} capture job(s) queued!`);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to create capture job");
+    } finally {
+      setCapturing(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
   };
 
   return (
@@ -57,7 +118,13 @@ const Dashboard = () => {
           ))}
         </nav>
         <div className="p-3 border-t">
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+          <div className="px-3 py-1.5 mb-2 text-xs text-muted-foreground truncate">
+            {user?.email}
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
             <LogOut className="w-4 h-4" />
             Sign out
           </button>
@@ -83,9 +150,9 @@ const Dashboard = () => {
                 onChange={(e) => setUrl(e.target.value)}
                 className="text-base h-12"
               />
-              <Button variant="brand" size="lg" className="px-8">
-                <Camera className="w-4 h-4 mr-2" />
-                Capture
+              <Button variant="brand" size="lg" className="px-8" onClick={handleCapture} disabled={capturing}>
+                {capturing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Camera className="w-4 h-4 mr-2" />}
+                {capturing ? "Capturing…" : "Capture"}
               </Button>
             </div>
           </div>
@@ -128,7 +195,7 @@ const Dashboard = () => {
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <Label className="mb-2 block">Capture Mode</Label>
-                  <Select defaultValue="viewport">
+                  <Select value={captureMode} onValueChange={setCaptureMode}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="viewport">Viewport only</SelectItem>
@@ -138,7 +205,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <Label className="mb-2 block">Delay Before Capture</Label>
-                  <Select defaultValue="0">
+                  <Select value={delay} onValueChange={setDelay}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="0">No delay</SelectItem>
@@ -150,7 +217,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <Label className="mb-2 block">Resolution Scale</Label>
-                  <Select defaultValue="1">
+                  <Select value={scale} onValueChange={setScale}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1">1x</SelectItem>
@@ -161,7 +228,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <Label className="mb-2 block">Output Format</Label>
-                  <Select defaultValue="png">
+                  <Select value={format} onValueChange={setFormat}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="png">PNG</SelectItem>
@@ -174,7 +241,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <Label className="mb-2 block">Background</Label>
-                <Select defaultValue="white">
+                <Select value={background} onValueChange={setBackground}>
                   <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="transparent">Transparent</SelectItem>
@@ -187,16 +254,16 @@ const Dashboard = () => {
 
             <TabsContent value="hiding" className="space-y-4 mt-4">
               {[
-                { id: "cookie", label: "Hide cookie banners" },
-                { id: "chat", label: "Hide chat widgets" },
-                { id: "sticky", label: "Hide sticky headers" },
-                { id: "popups", label: "Hide popups & modals" },
+                { id: "cookie", label: "Hide cookie banners", checked: hideCookies, onChange: setHideCookies },
+                { id: "chat", label: "Hide chat widgets", checked: hideChat, onChange: setHideChat },
+                { id: "sticky", label: "Hide sticky headers", checked: hideStickyHeaders, onChange: setHideStickyHeaders },
+                { id: "popups", label: "Hide popups & modals", checked: hidePopups, onChange: setHidePopups },
               ].map((toggle) => (
                 <div key={toggle.id} className="flex items-center justify-between p-4 rounded-xl border bg-card">
                   <Label htmlFor={toggle.id} className="font-medium cursor-pointer">
                     {toggle.label}
                   </Label>
-                  <Switch id={toggle.id} />
+                  <Switch id={toggle.id} checked={toggle.checked} onCheckedChange={toggle.onChange} />
                 </div>
               ))}
             </TabsContent>
