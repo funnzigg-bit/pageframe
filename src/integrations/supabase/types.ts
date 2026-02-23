@@ -14,7 +14,403 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      api_keys: {
+        Row: {
+          created_at: string
+          id: string
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      capture_assets: {
+        Row: {
+          created_at: string
+          file_path: string
+          file_size_bytes: number | null
+          file_url: string
+          format: string
+          height: number | null
+          id: string
+          is_annotation: boolean
+          job_id: string
+          user_id: string
+          width: number | null
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          file_size_bytes?: number | null
+          file_url: string
+          format: string
+          height?: number | null
+          id?: string
+          is_annotation?: boolean
+          job_id: string
+          user_id: string
+          width?: number | null
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          file_size_bytes?: number | null
+          file_url?: string
+          format?: string
+          height?: number | null
+          id?: string
+          is_annotation?: boolean
+          job_id?: string
+          user_id?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_assets_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "capture_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      capture_jobs: {
+        Row: {
+          background: string
+          completed_at: string | null
+          created_at: string
+          delay_seconds: number
+          device_preset: string
+          device_scale_factor: number
+          error_message: string | null
+          full_page: boolean
+          hide_chat_widgets: boolean
+          hide_cookie_banners: boolean
+          hide_popups: boolean
+          hide_sticky_headers: boolean
+          id: string
+          output_format: string
+          project_id: string | null
+          started_at: string | null
+          status: string
+          url: string
+          user_agent: string | null
+          user_id: string
+          viewport_height: number
+          viewport_width: number
+        }
+        Insert: {
+          background?: string
+          completed_at?: string | null
+          created_at?: string
+          delay_seconds?: number
+          device_preset?: string
+          device_scale_factor?: number
+          error_message?: string | null
+          full_page?: boolean
+          hide_chat_widgets?: boolean
+          hide_cookie_banners?: boolean
+          hide_popups?: boolean
+          hide_sticky_headers?: boolean
+          id?: string
+          output_format?: string
+          project_id?: string | null
+          started_at?: string | null
+          status?: string
+          url: string
+          user_agent?: string | null
+          user_id: string
+          viewport_height?: number
+          viewport_width?: number
+        }
+        Update: {
+          background?: string
+          completed_at?: string | null
+          created_at?: string
+          delay_seconds?: number
+          device_preset?: string
+          device_scale_factor?: number
+          error_message?: string | null
+          full_page?: boolean
+          hide_chat_widgets?: boolean
+          hide_cookie_banners?: boolean
+          hide_popups?: boolean
+          hide_sticky_headers?: boolean
+          id?: string
+          output_format?: string
+          project_id?: string | null
+          started_at?: string | null
+          status?: string
+          url?: string
+          user_agent?: string | null
+          user_id?: string
+          viewport_height?: number
+          viewport_width?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "capture_jobs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          daily_captures_reset_at: string
+          daily_captures_used: number
+          email: string | null
+          full_name: string | null
+          id: string
+          plan: string
+          stripe_customer_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          daily_captures_reset_at?: string
+          daily_captures_used?: number
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          plan?: string
+          stripe_customer_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          daily_captures_reset_at?: string
+          daily_captures_used?: number
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          plan?: string
+          stripe_customer_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          team_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          team_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          team_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      share_links: {
+        Row: {
+          allow_download: boolean
+          asset_id: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          password_hash: string | null
+          slug: string
+          user_id: string
+        }
+        Insert: {
+          allow_download?: boolean
+          asset_id: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          password_hash?: string | null
+          slug: string
+          user_id: string
+        }
+        Update: {
+          allow_download?: boolean
+          asset_id?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          password_hash?: string | null
+          slug?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_links_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "capture_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: string
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teams: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      usage_records: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
