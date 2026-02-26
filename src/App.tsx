@@ -14,6 +14,7 @@ import Auth from "./pages/Auth";
 import SharedCapture from "./pages/SharedCapture";
 import Schedules from "./pages/Schedules";
 import Team from "./pages/Team";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
