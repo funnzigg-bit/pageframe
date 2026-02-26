@@ -250,6 +250,8 @@ const Auth = () => {
         </Button>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
+          By continuing, you agree to our Terms of Service and Privacy Policy.
+        </p>
       </div>
     </div>
   );
