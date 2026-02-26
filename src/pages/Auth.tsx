@@ -234,9 +234,22 @@ const Auth = () => {
           </form>
         )}
 
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t" /></div>
+          <div className="relative flex justify-center text-xs"><span className="bg-background px-2 text-muted-foreground">or</span></div>
+        </div>
+
+        <Button
+          variant="outline"
+          className="w-full h-11"
+          onClick={handleDemoSignIn}
+          disabled={demoLoading}
+        >
+          {demoLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+          🚀 Sign in as Demo User
+        </Button>
+
         <p className="text-center text-xs text-muted-foreground mt-6">
-          By continuing, you agree to our Terms of Service and Privacy Policy.
-        </p>
       </div>
     </div>
   );
