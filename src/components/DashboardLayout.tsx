@@ -85,7 +85,7 @@ const DashboardLayout = ({ children, active }: { children: ReactNode; active: st
             <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
             <aside className="relative w-64 bg-card border-r flex flex-col z-10">
               <div className="p-4 border-b flex items-center justify-between">
-                <img src={viewportLogo} alt="Viewport" className="h-7" />
+                <img src={pageframeLogo} alt="PageFrame" className="h-7" />
                 <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}>
                   <X className="w-4 h-4" />
                 </Button>
