@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Download, ExternalLink, RefreshCw, Loader2, AlertCircle, CheckCircle, Clock, XCircle, Share2 } from "lucide-react";
+import { Download, ExternalLink, RefreshCw, Loader2, AlertCircle, CheckCircle, Clock, XCircle, Share2, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import DashboardLayout from "@/components/DashboardLayout";
+import MockupDialog from "@/components/MockupDialog";
 
 interface CaptureJob {
   id: string;
@@ -40,6 +41,7 @@ const History = () => {
   const [jobs, setJobs] = useState<CaptureJob[]>([]);
   const [assets, setAssets] = useState<CaptureAsset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mockupAssetUrl, setMockupAssetUrl] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
@@ -129,6 +131,9 @@ const History = () => {
                     {asset && (
                       <>
                         {asset.file_size_bytes && <span className="text-xs text-muted-foreground">{formatSize(asset.file_size_bytes)}</span>}
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setMockupAssetUrl(asset.file_url)} title="Mockup">
+                          <Monitor className="w-4 h-4" />
+                        </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shareCapture(asset.id)} title="Share">
                           <Share2 className="w-4 h-4" />
                         </Button>
@@ -150,6 +155,11 @@ const History = () => {
           </div>
         )}
       </div>
+      <MockupDialog
+        open={!!mockupAssetUrl}
+        onOpenChange={(open) => !open && setMockupAssetUrl(null)}
+        imageUrl={mockupAssetUrl ?? ""}
+      />
     </DashboardLayout>
   );
 };
