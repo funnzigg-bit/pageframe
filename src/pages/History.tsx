@@ -41,6 +41,7 @@ const History = () => {
   const [jobs, setJobs] = useState<CaptureJob[]>([]);
   const [assets, setAssets] = useState<CaptureAsset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mockupAssetUrl, setMockupAssetUrl] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (!user) return;
