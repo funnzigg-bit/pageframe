@@ -155,6 +155,11 @@ const History = () => {
           </div>
         )}
       </div>
+      <MockupDialog
+        open={!!mockupAssetUrl}
+        onOpenChange={(open) => !open && setMockupAssetUrl(null)}
+        imageUrl={mockupAssetUrl ?? ""}
+      />
     </DashboardLayout>
   );
 };
