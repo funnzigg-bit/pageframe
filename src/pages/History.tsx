@@ -131,6 +131,9 @@ const History = () => {
                     {asset && (
                       <>
                         {asset.file_size_bytes && <span className="text-xs text-muted-foreground">{formatSize(asset.file_size_bytes)}</span>}
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setMockupAssetUrl(asset.file_url)} title="Mockup">
+                          <Monitor className="w-4 h-4" />
+                        </Button>
                         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => shareCapture(asset.id)} title="Share">
                           <Share2 className="w-4 h-4" />
                         </Button>
