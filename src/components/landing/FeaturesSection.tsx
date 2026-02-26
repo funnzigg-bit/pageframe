@@ -71,7 +71,7 @@ const FeaturesSection = () => (
           <span className="text-gradient">capture the web</span>
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          From quick viewport screenshots to full-page captures at retina resolution — Viewport handles it all.
+          From quick viewport screenshots to full-page captures at retina resolution — PageFrame handles it all.
         </p>
       </motion.div>
 

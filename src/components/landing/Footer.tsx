@@ -1,11 +1,11 @@
-import viewportLogo from "@/assets/viewport-logo.png";
+import pageframeLogo from "@/assets/pageframe-logo.png";
 
 const Footer = () => (
   <footer className="py-12 border-t bg-card">
     <div className="container mx-auto px-4">
       <div className="grid md:grid-cols-4 gap-8">
         <div>
-          <img src={viewportLogo} alt="Viewport" className="h-7 mb-4" />
+          <img src={pageframeLogo} alt="PageFrame" className="h-7 mb-4" />
           <p className="text-sm text-muted-foreground">
             Pixel-perfect website screenshots for every device.
           </p>
@@ -38,7 +38,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} Viewport. All rights reserved.
+        © {new Date().getFullYear()} PageFrame. All rights reserved.
       </div>
     </div>
   </footer>

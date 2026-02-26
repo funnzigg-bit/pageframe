@@ -8,8 +8,8 @@ import { motion } from "framer-motion";
 
 const faqs = [
   {
-    q: "How does Viewport capture screenshots?",
-    a: "Viewport uses a server-side Chromium browser to render your page exactly as a real user would see it. We wait for animations, lazy-loaded content, and network requests to complete before capturing.",
+    q: "How does PageFrame capture screenshots?",
+    a: "PageFrame uses a server-side Chromium browser to render your page exactly as a real user would see it. We wait for animations, lazy-loaded content, and network requests to complete before capturing.",
   },
   {
     q: "Can I capture pages behind authentication?",

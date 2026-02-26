@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Monitor, Smartphone, Tablet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import viewportLogo from "@/assets/viewport-logo.png";
+import pageframeLogo from "@/assets/pageframe-logo.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <div className="flex items-center gap-2">
-          <img src={viewportLogo} alt="Viewport" className="h-8" />
+          <img src={pageframeLogo} alt="PageFrame" className="h-8" />
         </div>
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
@@ -30,7 +30,6 @@ const Hero = () => {
   const navigate = useNavigate();
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 bg-brand-gradient-subtle" />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
       
@@ -53,7 +52,7 @@ const Hero = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            Viewport renders your site, waits for animations, and exports clean, sharp screenshots — ready for marketing, docs, and audits.
+            PageFrame renders your site, waits for animations, and exports clean, sharp screenshots — ready for marketing, docs, and audits.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -68,7 +67,6 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* Device mockup */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,7 +84,7 @@ const Hero = () => {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="px-4 py-1 bg-background rounded-md text-xs text-muted-foreground w-64 text-center">
-                    app.viewport.dev
+                    app.pageframe.dev
                   </div>
                 </div>
               </div>

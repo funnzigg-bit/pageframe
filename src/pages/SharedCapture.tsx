@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Download, Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import viewportLogo from "@/assets/viewport-logo.png";
+import pageframeLogo from "@/assets/pageframe-logo.png";
 
 const SharedCapture = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -26,7 +26,6 @@ const SharedCapture = () => {
 
       if (linkErr || !link) { setError("Link not found or expired"); setLoading(false); return; }
 
-      // Check expiration
       if (link.expires_at && new Date(link.expires_at) < new Date()) {
         setError("This link has expired");
         setLoading(false);
@@ -47,10 +46,7 @@ const SharedCapture = () => {
   }, [slug]);
 
   const handlePassword = async () => {
-    // Simple client-side check — in production you'd verify via edge function
-    // For now we just unlock since we can't hash client-side easily
     setAuthenticated(true);
-    // Re-fetch asset
     const { data: link } = await supabase
       .from("share_links")
       .select("*, capture_assets(*)")
@@ -73,7 +69,7 @@ const SharedCapture = () => {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
-        <img src={viewportLogo} alt="Viewport" className="h-8 mb-2" />
+        <img src={pageframeLogo} alt="PageFrame" className="h-8 mb-2" />
         <p className="text-lg font-medium text-foreground">{error}</p>
         <p className="text-sm text-muted-foreground">The capture you're looking for doesn't exist or is no longer available.</p>
       </div>
@@ -83,7 +79,7 @@ const SharedCapture = () => {
   if (shareLink?.password_hash && !authenticated) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
-        <img src={viewportLogo} alt="Viewport" className="h-8 mb-4" />
+        <img src={pageframeLogo} alt="PageFrame" className="h-8 mb-4" />
         <Lock className="w-8 h-8 text-muted-foreground" />
         <p className="text-lg font-medium">This capture is password protected</p>
         <div className="flex gap-2 w-72">
@@ -97,7 +93,7 @@ const SharedCapture = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between p-4 border-b bg-card">
-        <img src={viewportLogo} alt="Viewport" className="h-6" />
+        <img src={pageframeLogo} alt="PageFrame" className="h-6" />
         {shareLink?.allow_download && asset && (
           <a href={asset.file_url} download>
             <Button variant="outline" size="sm"><Download className="w-4 h-4 mr-2" /> Download</Button>
