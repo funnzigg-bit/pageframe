@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Camera, History, FolderOpen, Settings, LogOut, Menu, X, Moon, Sun, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import viewportLogo from "@/assets/viewport-logo.png";
+import pageframeLogo from "@/assets/pageframe-logo.png";
 
 const navItems = [
   { icon: Camera, label: "New Capture", path: "/dashboard" },
