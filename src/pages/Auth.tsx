@@ -18,6 +18,29 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
+
+  const handleDemoSignIn = async () => {
+    setDemoLoading(true);
+    const demoEmail = "demo@viewport-app.com";
+    const demoPassword = "demo123456";
+
+    // Try sign in first, if fails create the account then sign in
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: demoEmail,
+      password: demoPassword,
+    });
+
+    if (signInError) {
+      await supabase.auth.signUp({ email: demoEmail, password: demoPassword });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: demoEmail,
+        password: demoPassword,
+      });
+      if (error) toast.error("Demo sign-in failed: " + error.message);
+    }
+    setDemoLoading(false);
+  };
 
   if (loading) {
     return (
