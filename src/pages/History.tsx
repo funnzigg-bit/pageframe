@@ -217,7 +217,7 @@ const History = () => {
                             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setAnnotateUrl(asset.file_url)} title="Annotate">
                               <Pencil className="w-4 h-4" />
                             </Button>
-                            <Button variant="outline" size="sm" className="h-8 gap-1 text-xs font-medium" onClick={() => setMockupAssetUrl(asset.file_url)}>
+                            <Button variant="outline" size="sm" className="h-8 gap-1 text-xs font-medium" onClick={() => setMockupData({ imageUrl: asset.file_url, sourceUrl: job.url })}>
                               <Monitor className="w-3.5 h-3.5" />
                               Mockup
                             </Button>
