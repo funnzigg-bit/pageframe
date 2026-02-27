@@ -94,7 +94,7 @@ const SharedCapture = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between p-4 border-b bg-card">
-        <img src={pageframeLogo} alt="PageFrame" className="h-6" />
+        <img src={pageframeLogo} alt="PageFrame" className="h-6 cursor-pointer" onClick={() => navigate("/")} />
         {shareLink?.allow_download && asset && (
           <a href={asset.file_url} download>
             <Button variant="outline" size="sm"><Download className="w-4 h-4 mr-2" /> Download</Button>
