@@ -325,7 +325,7 @@ const MockupDialog = ({ open, onOpenChange, imageUrl }: MockupDialogProps) => {
           className={`flex items-center justify-center p-12 rounded-xl ${bgClass}`}
           style={{ minHeight: 320 }}
         >
-          <div className={`${getMaxWidth(device, orientation)} w-full`}>
+          <div className={`${imageMaxWidths[device]} w-full`}>
             <Frame>
               <InteractiveImage
                 imageUrl={imageUrl}
