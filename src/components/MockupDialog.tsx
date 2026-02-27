@@ -19,7 +19,7 @@ interface MockupDialogProps {
 
 type DeviceType = "macbook" | "iphone" | "ipad" | "browser";
 type BgStyle = "white" | "dark" | "gradient" | "brand";
-type Orientation = "portrait" | "landscape";
+
 
 const devices: { id: DeviceType; label: string; icon: typeof Monitor }[] = [
   { id: "macbook", label: "MacBook", icon: Monitor },
