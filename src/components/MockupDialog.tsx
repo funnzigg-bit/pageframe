@@ -295,26 +295,8 @@ const MockupDialog = ({ open, onOpenChange, imageUrl }: MockupDialogProps) => {
           </Button>
         </div>
 
-        {/* Controls row 2: Orientation + Zoom */}
+        {/* Controls row 2: Zoom */}
         <div className="flex flex-wrap gap-4 items-center">
-          {supportsOrientation(device) && (
-            <div className="flex gap-1 p-1 rounded-lg bg-muted">
-              {(["portrait", "landscape"] as const).map((o) => (
-                <button
-                  key={o}
-                  onClick={() => { setOrientation(o); resetView(); }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                    orientation === o
-                      ? "bg-background text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {o === "portrait" ? "Portrait" : "Landscape"}
-                </button>
-              ))}
-            </div>
-          )}
-
           <div className="flex items-center gap-3 flex-1 min-w-[180px]">
             <span className="text-xs text-muted-foreground whitespace-nowrap">Zoom {zoom.toFixed(1)}x</span>
             <Slider
