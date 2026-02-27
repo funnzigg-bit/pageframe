@@ -80,7 +80,7 @@ const SharedCapture = () => {
   if (shareLink?.password_hash && !authenticated) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
-        <img src={pageframeLogo} alt="PageFrame" className="h-8 mb-4" />
+        <img src={pageframeLogo} alt="PageFrame" className="h-8 mb-4 cursor-pointer" onClick={() => navigate("/")} />
         <Lock className="w-8 h-8 text-muted-foreground" />
         <p className="text-lg font-medium">This capture is password protected</p>
         <div className="flex gap-2 w-72">
