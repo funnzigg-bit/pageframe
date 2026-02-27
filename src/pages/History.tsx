@@ -51,7 +51,7 @@ const History = () => {
   const [jobs, setJobs] = useState<CaptureJob[]>([]);
   const [assets, setAssets] = useState<CaptureAsset[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mockupAssetUrl, setMockupAssetUrl] = useState<string | null>(null);
+  const [mockupData, setMockupData] = useState<{ imageUrl: string; sourceUrl: string } | null>(null);
   const [annotateUrl, setAnnotateUrl] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filterProject, setFilterProject] = useState<string>("all");
