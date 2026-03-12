@@ -1,49 +1,55 @@
 import { motion } from "framer-motion";
 import {
-  Monitor, Smartphone, RotateCcw, Maximize2,
-  ImageIcon, EyeOff, Link2, Code2
+  Code2,
+  EyeOff,
+  ImageIcon,
+  Link2,
+  Maximize2,
+  Monitor,
+  RotateCcw,
+  Smartphone,
 } from "lucide-react";
 
 const features = [
   {
     icon: Monitor,
     title: "Multi-device capture",
-    description: "Desktop, mobile, and tablet presets — iPhone, Pixel, iPad, and custom viewports.",
+    description: "Desktop, tablet, and mobile presets are grouped into one capture flow instead of separate manual runs.",
   },
   {
     icon: RotateCcw,
-    title: "Portrait & landscape",
-    description: "Capture both orientations automatically with a single click.",
+    title: "Portrait and landscape",
+    description: "Switch orientation when the layout matters and compare the result without resetting your setup.",
   },
   {
     icon: Maximize2,
-    title: "Full-page screenshots",
-    description: "Scroll the entire page and stitch together a complete capture.",
+    title: "Full-page output",
+    description: "Create stitched captures for long product pages, docs, and audit snapshots when viewport-only is not enough.",
   },
   {
     icon: ImageIcon,
-    title: "High-resolution exports",
-    description: "Export at 1x, 2x, or 3x resolution in PNG, JPG, WebP, or PDF.",
+    title: "Retina exports",
+    description: "Generate crisp PNG, JPG, WebP, or PDF files at 1x, 2x, or 3x for real production use.",
   },
   {
     icon: EyeOff,
-    title: "Hide cookie banners & popups",
-    description: "Automatically remove intrusive UI elements before capture.",
+    title: "UI cleanup controls",
+    description: "Strip banners, chat widgets, sticky headers, and popups before they ruin otherwise useful screenshots.",
   },
   {
     icon: Link2,
-    title: "Shareable links",
-    description: "Generate public links with optional expiry and password protection.",
+    title: "Shareable results",
+    description: "Turn captures into client-ready links instead of sending oversized files around by hand.",
   },
   {
     icon: Code2,
-    title: "API access",
-    description: "Integrate captures into your CI/CD pipeline or docs workflow.",
+    title: "API and automation",
+    description: "Slot capture jobs into review flows, release checklists, and docs pipelines when manual work stops scaling.",
   },
   {
     icon: Smartphone,
-    title: "Delay before capture",
-    description: "Wait for animations, lazy-loaded content, and dynamic elements.",
+    title: "Delay and timing",
+    description: "Wait for animations, lazy-loaded media, and hydration noise so the final export looks intentional.",
   },
 ];
 
@@ -58,41 +64,55 @@ const item = {
 };
 
 const FeaturesSection = () => (
-  <section id="features" className="py-24 bg-background relative">
-    <div className="container mx-auto px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
-        <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-          Everything you need to{" "}
-          <span className="text-gradient">capture the web</span>
-        </h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          From quick viewport screenshots to full-page captures at retina resolution — PageFrame handles it all.
-        </p>
-      </motion.div>
+  <section id="features" className="relative py-24">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mb-14 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="mb-4 inline-flex rounded-full border border-border bg-card/70 px-4 py-2 text-sm text-muted-foreground">
+            Product capabilities
+          </div>
+          <h2 className="font-display text-4xl leading-tight md:text-5xl">
+            Everything needed to make screenshot capture feel operational, not improvised.
+          </h2>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-2xl text-lg leading-8 text-muted-foreground lg:justify-self-end"
+        >
+          The focus is less on flashy effects and more on removing the boring cleanup work that usually happens after every browser screenshot.
+        </motion.p>
+      </div>
 
       <motion.div
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid gap-5 md:grid-cols-2 xl:grid-cols-4"
       >
-        {features.map((feature) => (
+        {features.map((feature, index) => (
           <motion.div
             key={feature.title}
             variants={item}
-            className="group p-6 rounded-2xl border bg-card hover:shadow-brand transition-all duration-300 hover:-translate-y-1"
+            className={`panel group p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-brand ${
+              index === 0 || index === 4 ? "xl:col-span-2" : ""
+            }`}
           >
-            <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center mb-4">
-              <feature.icon className="w-5 h-5 text-primary-foreground" />
+            <div className="mb-5 flex items-center justify-between">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-primary-foreground shadow-brand">
+                <feature.icon className="h-5 w-5" />
+              </div>
+              <div className="h-px flex-1 bg-gradient-to-r from-border via-border to-transparent ml-4" />
             </div>
-            <h3 className="font-display font-semibold text-lg mb-2">{feature.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+            <h3 className="font-display text-2xl">{feature.title}</h3>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">{feature.description}</p>
           </motion.div>
         ))}
       </motion.div>

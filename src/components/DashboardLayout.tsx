@@ -1,7 +1,19 @@
 import { ReactNode, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Camera, History, FolderOpen, Settings, LogOut, Menu, X, Moon, Sun, Clock, Users } from "lucide-react";
+import {
+  Camera,
+  History,
+  FolderOpen,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  Moon,
+  Sun,
+  Clock,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import pageframeLogo from "@/assets/pageframe-logo.png";
@@ -26,15 +38,9 @@ const DashboardLayout = ({ children, active }: { children: ReactNode; active: st
   });
 
   useEffect(() => {
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
-
-  const toggleDark = () => setDark(!dark);
 
   const handleSignOut = async () => {
     await signOut();
@@ -44,70 +50,92 @@ const DashboardLayout = ({ children, active }: { children: ReactNode; active: st
 
   const navContent = (
     <>
-      <nav className="flex-1 p-3 space-y-1">
+      <div className="px-4 pb-4 pt-5">
+        <button className="flex items-center gap-3" onClick={() => navigate("/dashboard")}>
+          <img src={pageframeLogo} alt="PageFrame" className="h-8" />
+          <div className="text-left">
+            <div className="text-sm font-semibold text-sidebar-foreground">PageFrame</div>
+            <div className="text-xs uppercase tracking-[0.24em] text-sidebar-foreground/50">Capture Studio</div>
+          </div>
+        </button>
+      </div>
+
+      <nav className="flex-1 space-y-1 px-3 py-3">
         {navItems.map((item) => (
           <button
             key={item.label}
-            onClick={() => { navigate(item.path); setMobileOpen(false); }}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+            onClick={() => {
+              navigate(item.path);
+              setMobileOpen(false);
+            }}
+            className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors ${
               item.label === active
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_16px_30px_-18px_rgba(249,115,22,0.7)]"
+                : "text-sidebar-foreground/72 hover:bg-sidebar-accent hover:text-sidebar-foreground"
             }`}
           >
-            <item.icon className="w-4 h-4" />
-            {item.label}
+            <item.icon className="h-4 w-4" />
+            <span className="font-medium">{item.label}</span>
           </button>
         ))}
       </nav>
-      <div className="p-3 border-t space-y-1">
-        <button onClick={toggleDark} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
-          {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          {dark ? "Light mode" : "Dark mode"}
+
+      <div className="border-t border-sidebar-border px-3 py-4">
+        <button
+          onClick={() => setDark(!dark)}
+          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/72 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+        >
+          {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          <span>{dark ? "Light mode" : "Dark mode"}</span>
         </button>
-        <div className="px-3 py-1.5 text-xs text-muted-foreground truncate">{user?.email}</div>
-        <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
-          <LogOut className="w-4 h-4" /> Sign out
+
+        <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+          <div className="text-xs uppercase tracking-[0.2em] text-sidebar-foreground/45">Signed in as</div>
+          <div className="mt-2 truncate text-sm text-sidebar-foreground">{user?.email}</div>
+        </div>
+
+        <button
+          onClick={handleSignOut}
+          className="mt-3 flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/72 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Sign out</span>
         </button>
       </div>
     </>
   );
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Desktop sidebar */}
-      <aside className="w-64 border-r bg-card hidden lg:flex flex-col">
-        <div className="p-4 border-b">
-          <img src={pageframeLogo} alt="PageFrame" className="h-7 cursor-pointer" onClick={() => navigate("/dashboard")} />
+    <div className="min-h-screen bg-background">
+      <div className="flex min-h-screen">
+        <aside className="hidden w-72 border-r border-sidebar-border bg-sidebar lg:flex lg:flex-col">
+          {navContent}
+        </aside>
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur lg:hidden">
+            <div className="flex items-center justify-between px-4 py-3">
+              <button className="flex items-center gap-3" onClick={() => navigate("/dashboard")}>
+                <img src={pageframeLogo} alt="PageFrame" className="h-7" />
+                <span className="font-semibold">PageFrame</span>
+              </button>
+              <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
+          </header>
+
+          {mobileOpen && (
+            <div className="fixed inset-0 z-50 lg:hidden">
+              <div className="absolute inset-0 bg-slate-950/55" onClick={() => setMobileOpen(false)} />
+              <aside className="relative h-full w-72 bg-sidebar shadow-2xl">
+                {navContent}
+              </aside>
+            </div>
+          )}
+
+          <main className="flex-1 overflow-auto">{children}</main>
         </div>
-        {navContent}
-      </aside>
-
-      {/* Mobile header + sheet */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="lg:hidden flex items-center justify-between p-3 border-b bg-card">
-          <img src={pageframeLogo} alt="PageFrame" className="h-6 cursor-pointer" onClick={() => navigate("/dashboard")} />
-          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
-        </header>
-
-        {mobileOpen && (
-          <div className="lg:hidden fixed inset-0 z-50 flex">
-            <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
-            <aside className="relative w-64 bg-card border-r flex flex-col z-10">
-              <div className="p-4 border-b flex items-center justify-between">
-                <img src={pageframeLogo} alt="PageFrame" className="h-7 cursor-pointer" onClick={() => navigate("/dashboard")} />
-                <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}>
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              {navContent}
-            </aside>
-          </div>
-        )}
-
-        <main className="flex-1 overflow-auto">{children}</main>
       </div>
     </div>
   );

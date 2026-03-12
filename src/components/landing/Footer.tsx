@@ -1,44 +1,46 @@
 import pageframeLogo from "@/assets/pageframe-logo.png";
 
 const Footer = () => (
-  <footer className="py-12 border-t bg-card">
-    <div className="container mx-auto px-4">
-      <div className="grid md:grid-cols-4 gap-8">
+  <footer className="border-t border-border/70 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl panel overflow-hidden">
+      <div className="grid gap-10 px-6 py-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr] lg:px-10">
         <div>
-          <img src={pageframeLogo} alt="PageFrame" className="h-7 mb-4" />
-          <p className="text-sm text-muted-foreground">
-            Pixel-perfect website screenshots for every device.
+          <img src={pageframeLogo} alt="PageFrame" className="h-8" />
+          <p className="mt-4 max-w-sm text-sm leading-7 text-muted-foreground">
+            Browser screenshots without the cleanup loop. Capture once, export cleanly, and hand off assets that already look reviewed.
           </p>
         </div>
+
         <div>
-          <h4 className="font-display font-semibold mb-3">Product</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="#features" className="hover:text-foreground transition-colors">Features</a></li>
-            <li><a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">API Docs</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Changelog</a></li>
+          <h4 className="font-display text-xl">Product</h4>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li><a href="#features" className="transition-colors hover:text-foreground">Features</a></li>
+            <li><a href="#pricing" className="transition-colors hover:text-foreground">Pricing</a></li>
+            <li><a href="#faq" className="transition-colors hover:text-foreground">FAQ</a></li>
           </ul>
         </div>
+
         <div>
-          <h4 className="font-display font-semibold mb-3">Company</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Careers</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
+          <h4 className="font-display text-xl">Use Cases</h4>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li>Design QA</li>
+            <li>Marketing assets</li>
+            <li>Client sign-off</li>
           </ul>
         </div>
+
         <div>
-          <h4 className="font-display font-semibold mb-3">Legal</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Terms of Service</a></li>
-            <li><a href="#" className="hover:text-foreground transition-colors">Cookie Policy</a></li>
+          <h4 className="font-display text-xl">Notes</h4>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li>Public-page capture today</li>
+            <li>Automation on Agency</li>
+            <li>Exports in multiple formats</li>
           </ul>
         </div>
       </div>
-      <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} PageFrame. All rights reserved.
+
+      <div className="border-t border-border/70 px-6 py-5 text-sm text-muted-foreground lg:px-10">
+        © {new Date().getFullYear()} PageFrame. Built for cleaner screenshot workflows.
       </div>
     </div>
   </footer>
