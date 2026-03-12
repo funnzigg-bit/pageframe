@@ -6,6 +6,40 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const formatProviderError = async (response: Response) => {
+  const text = await response.text();
+
+  try {
+    const payload = JSON.parse(text);
+    const errorCode = typeof payload?.error_code === "string" ? payload.error_code : null;
+    const errorMessage = typeof payload?.error_message === "string" ? payload.error_message : text;
+
+    if (errorCode === "screenshots_limit_reached") {
+      return {
+        code: errorCode,
+        message: "Screenshot provider quota reached. Update the ScreenshotOne subscription or API key quota, then retry.",
+      };
+    }
+
+    if (errorCode === "concurrency_limit_reached") {
+      return {
+        code: errorCode,
+        message: "Screenshot provider concurrency limit reached. Wait a moment and retry.",
+      };
+    }
+
+    return {
+      code: errorCode,
+      message: `ScreenshotOne API error [${response.status}]: ${errorMessage}`,
+    };
+  } catch {
+    return {
+      code: null,
+      message: `ScreenshotOne API error [${response.status}]: ${text}`,
+    };
+  }
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -93,8 +127,8 @@ Deno.serve(async (req) => {
         const screenshotRes = await fetch(screenshotUrl);
 
         if (!screenshotRes.ok) {
-          const errText = await screenshotRes.text();
-          throw new Error(`ScreenshotOne API error [${screenshotRes.status}]: ${errText}`);
+          const providerError = await formatProviderError(screenshotRes);
+          throw new Error(providerError.message);
         }
 
         const imageBuffer = await screenshotRes.arrayBuffer();

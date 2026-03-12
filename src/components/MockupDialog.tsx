@@ -30,6 +30,11 @@ interface MockupDialogProps {
   userId?: string;
 }
 
+interface CaptureJobStatus {
+  status: string;
+  error_message: string | null;
+}
+
 type DeviceType = "macbook" | "iphone" | "ipad" | "browser";
 type ShadowLevel = "none" | "soft" | "studio" | "lifted";
 type CanvasRatio = "auto" | "square" | "landscape" | "portrait" | "story";
@@ -375,13 +380,19 @@ const MockupDialog = ({ open, onOpenChange, imageUrl, sourceUrl, userId }: Mocku
       while (Date.now() < deadline) {
         await new Promise((resolve) => setTimeout(resolve, 1500));
         if (abortRef.current?.signal.aborted) return;
-        const { data: updated } = await supabase.from("capture_jobs").select("status, error_message").eq("id", job.id).single();
+        const { data: updated } = await supabase
+          .from("capture_jobs")
+          .select("status, error_message")
+          .eq("id", job.id)
+          .single<CaptureJobStatus>();
         if (updated?.status === "completed") {
           const { data: asset } = await supabase.from("capture_assets").select("file_url").eq("job_id", job.id).single();
           resultUrl = asset?.file_url ?? null;
           break;
         }
-        if (updated?.status === "failed") throw new Error(updated.error_message ?? "Capture failed");
+        if (updated?.status === "failed") {
+          throw new Error(updated.error_message ?? "Capture failed");
+        }
       }
 
       if (resultUrl) setDeviceImages((prev) => ({ ...prev, [d]: resultUrl }));

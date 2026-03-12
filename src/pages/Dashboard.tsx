@@ -39,6 +39,17 @@ interface Project {
   name: string;
 }
 
+interface CaptureInvokeResult {
+  job_id: string;
+  status: "completed" | "failed";
+  error?: string;
+}
+
+interface CaptureInvokeResponse {
+  processed: number;
+  results?: CaptureInvokeResult[];
+}
+
 const toggles = [
   { id: "cookie", label: "Hide cookie banners" },
   { id: "chat", label: "Hide chat widgets" },
@@ -145,13 +156,22 @@ const Dashboard = () => {
 
       toast.success(`${total} capture(s) queued`);
 
-      const { error: fnError } = await supabase.functions.invoke("process-captures", {
+      const { data, error: fnError } = await supabase.functions.invoke<CaptureInvokeResponse>("process-captures", {
         body: { job_ids: jobIds },
       });
       if (fnError) {
         toast.error("Processing failed. Check History for details.");
       } else {
-        toast.success("Captures completed");
+        const failedResults = data?.results?.filter((result) => result.status === "failed") ?? [];
+        if (failedResults.length > 0) {
+          const providerQuotaFailure = failedResults.find((result) =>
+            result.error?.toLowerCase().includes("quota reached") ||
+            result.error?.includes("screenshots_limit_reached"),
+          );
+          toast.error(providerQuotaFailure?.error || "Some captures failed. Check History for details.");
+        } else {
+          toast.success("Captures completed");
+        }
       }
       navigate("/history");
     } catch (err: any) {
